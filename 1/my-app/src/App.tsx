@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./App.css";
 import PricingCard from "./PricingCard";
 
 function App() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -17,8 +15,6 @@ function App() {
             "4 contributors",
             "Up to 3 GB storage space",
           ]}
-          selected={selectedIndex === 0}
-          onSelect={() => setSelectedIndex(0)}
         />
         <PricingCard
           plan="Pro"
@@ -29,8 +25,6 @@ function App() {
             "Up to 10 GB storage space",
           ]}
           isFeatured
-          selected={selectedIndex === 1}
-          onSelect={() => setSelectedIndex(1)}
         />
         <PricingCard
           plan="Expert"
@@ -40,8 +34,6 @@ function App() {
             "Unlimited contributors",
             "Up to 100 GB storage space",
           ]}
-          selected={selectedIndex === 2}
-          onSelect={() => setSelectedIndex(2)}
         />
       </div>
     </div>

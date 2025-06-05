@@ -1,0 +1,31 @@
+/* styles.css */
+.nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  min-height: 64px;
+  position: relative;
+}
+.menu {display:flex;gap:2rem;}
+@media (max-width:768px){
+  .menu{
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    flex-direction:column;
+    position:absolute;
+    top:64px;
+    left:0;
+    width:100%;
+    background:#fff;
+    transform:translateY(-150%);
+    transition:.3s ease;
+    padding: 0;
+  }
+  .menu.open{
+    visibility: visible;
+    height: auto;
+    transform:translateY(0);
+    padding: initial;
+  }
+}

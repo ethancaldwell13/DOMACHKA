@@ -1,0 +1,294 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Menu</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="extra_task_design.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="logo">
+      <a id="logoText" href="#hero" style="text-decoration:none;color:#2563eb;font-weight:700;font-size:1.3rem;">MySite</a>
+    </div>
+    <button class="hamburger" id="menuBtn" aria-label="Открыть меню" aria-expanded="false">Menu</button>
+    <nav class="menu" id="menu">
+      <div class="menu-item"><a href="#hero">Home</a></div>
+      <div class="menu-item"><a href="#about">About</a></div>
+      <div class="menu-item"><a href="#contacts">Contact</a></div>
+    </nav>
+  </nav>
+
+  <main id="main-content">
+    <section class="hero" id="hero">
+      <h1>Панель управления</h1>
+      <p>Современный адаптивный сайт с плавным меню и стильным оформлением.</p>
+      <div class="switch-row">
+        <label class="switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider"></span>
+        </label>
+        <span class="switch-label">Тёмная тема</span>
+        <label class="switch" style="margin-left:1.5rem;">
+          <input type="checkbox" id="blurToggle">
+          <span class="slider"></span>
+        </label>
+        <span class="switch-label">Отключить блюр</span>
+      </div>
+      <div style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;">
+        <button id="breakBtn" class="btn-primary danger" type="button" style="font-family:'Segoe UI', Arial, sans-serif;font-weight:600;font-size:1.1rem;">Поломать сайт</button>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <h2>О нас</h2>
+      <p>Мы создаём современные веб-сайты с акцентом на удобство, эстетику и адаптивность. Наша команда использует только лучшие практики и свежие тренды веб-дизайна.</p>
+    </section>
+
+    <section class="contacts" id="contacts">
+      <h2>Контакты</h2>
+      <ul>
+        <li>Email: pingvin.com</li>
+        <li>Телефон: +54 9 11 2345-6789</li>
+        <li>Адрес: Аргентина</li>
+      </ul>
+    </section>
+  </main>
+  <div id="break-overlay">
+    <div id="okak-bg" class="okak-bg"></div>
+    <span class="break-text">О КАК</span>
+    <div id="hack-msg" class="hack-msg"></div>
+    <pre id="hack-code" class="hack-code"></pre>
+  </div>
+  <div id="final-blackout">
+    <span id="final-a" class="final-a">A</span>
+    <div id="final-a-message" class="final-a-message">
+      Ваша версия Angular была установлена
+      <span class="final-a-sub">Глобально и безвозвратно</span>
+    </div>
+  </div>
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+    const mainContent = document.getElementById('main-content');
+    const logoText = document.getElementById('logoText');
+    const themeToggle = document.getElementById('themeToggle');
+    const breakBtn = document.getElementById('breakBtn');
+    const breakOverlay = document.getElementById('break-overlay');
+    const nav = document.querySelector('.nav');
+    const main = document.getElementById('main-content');
+    const switchRow = document.querySelector('.switch-row');
+    const okakBg = document.getElementById('okak-bg');
+    let breakInterval = null;
+    let isBroken = false;
+    let glitchTimeout = null;
+
+    function setBlurState() {
+      if (menu.classList.contains('open') && window.innerWidth <= 768) {
+        mainContent.classList.add('menu-open');
+      } else {
+        mainContent.classList.remove('menu-open');
+      }
+    }
+
+    menuBtn.addEventListener('click', function() {
+      menu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', menu.classList.contains('open'));
+      setBlurState();
+    });
+
+    window.addEventListener('resize', setBlurState);
+
+    // Автоматически закрывать меню при клике на ссылку в мобильном режиме
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          menu.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+          setBlurState();
+        }
+      });
+    });
+
+    themeToggle.addEventListener('change', (e) => {
+      document.body.classList.toggle('dark-theme', e.target.checked);
+      logoText.textContent = e.target.checked ? 'DarkSite' : 'MySite';
+    });
+
+    document.getElementById('blurToggle').addEventListener('change', (e) => {
+      document.body.classList.toggle('no-blur', e.target.checked);
+    });
+
+    // "Поломать сайт"
+    breakBtn.addEventListener('click', () => {
+      if (!isBroken) {
+        nav.classList.add('break-hide');
+        main.classList.add('break-hide');
+        if (switchRow) switchRow.classList.add('break-hide');
+        setTimeout(() => {
+          breakOverlay.classList.add('show');
+          okakBg.classList.add('show');
+          setTimeout(() => {
+            okakBg.classList.remove('show');
+          }, 1800);
+          setTimeout(startHackEffect, 1200);
+        }, 600);
+        isBroken = true;
+      } else {
+        // Повторный взлом: убрать кнопку, плавно скрыть, мигать 5 сек, вернуть сайт
+        breakBtn.style.transition = 'opacity 1.2s';
+        breakBtn.style.opacity = '0';
+        setTimeout(() => {
+          breakBtn.style.display = 'none';
+          startGlitchEffect();
+        }, 1200);
+      }
+    });
+
+    function startHackEffect() {
+      const hackMsg = document.getElementById('hack-msg');
+      const hackCode = document.getElementById('hack-code');
+      hackMsg.textContent = 'идет взлом...';
+      hackMsg.classList.add('blink', 'small-hack-msg');
+      // Fake asm dump, smaller font
+      const fakeAsmDump = [
+        "SECTION .text",
+        "GLOBAL _start",
+        "",
+        "_start:",
+        " MOV RAX, 0x0 ; init accumulator",
+        " MOV RCX, 0x0 ; counter",
+        " MOV RDX, 0x5F5E100 ; loop to 100_000_000",
+        "",
+        "loop_start:",
+        " ADD RAX, RCX ; sum += i",
+        " INC RCX",
+        " CMP RCX, RDX",
+        " JL loop_start",
+        "",
+        " ; send result to stdout",
+        " MOV RDI, RAX",
+        " CALL print_result",
+        "",
+        " MOV RAX, 60 ; syscall: exit",
+        " XOR RDI, RDI",
+        " SYSCALL",
+        "",
+        "; +-------------------------------+",
+        "; | BINARY SECTION [01:SYS_MEM] |",
+        "; +-------------------------------+",
+        "",
+        "print_result:",
+        " PUSH RBP",
+        " MOV RBP, RSP",
+        " ; convert RDI to ASCII string",
+        " CALL u64_to_ascii",
+        " POP RBP",
+        " RET",
+        "",
+        "u64_to_ascii:",
+        " ; pseudo implementation...",
+        " MOV RSI, buffer_ascii",
+        " MOV RAX, RDI",
+        " ; [ ... ]",
+        " RET",
+        "",
+        "SECTION .data",
+        "buffer_ascii: TIMES 32 DB 0",
+        "",
+        "; +01 TRACE BLOCK START ++++++++",
+        "DBG_LOG 0x01 => [RCX=0x%X] LOOP_COUNT",
+        "DBG_LOG 0x02 => [RAX=0x%X] SUM_FINAL",
+        "; ++++++++++++++++++++++++++++++",
+        "",
+        "SECTION .bss",
+        "tmp_buffer: RESB 256",
+        "",
+        "; SYSTEM CHECKPOINTS",
+        "CHKPT 00H INIT",
+        "CHKPT 01H LOOP_BEGIN",
+        "CHKPT 02H LOOP_END",
+        "CHKPT 03H SHUTDOWN",
+        "",
+        "; low-level pattern for visual output",
+        ";; 01101000 01100101 01101100 01101100 01101111",
+        ";; +asm_noise+asm_noise+01+noise+01+asm++",
+        ";; :: JMP [0xBEEFCAFE] IF EAX > EBX ::",
+        ";; :: XOR EAX, EAX // RESET",
+        "",
+        "; fake opcodes for flavor",
+        "BYTEFLIP RAX",
+        "XORSHIFT RDX, 13",
+        "ROL RAX, CL",
+        "BZRCHK 0x0F00DEAD",
+        "NOISE +01+ +FF+ +DEBUG+ TRACE",
+        "",
+        "; EOF"
+      ];
+      hackCode.textContent = '';
+      hackCode.classList.remove('large-hack-code');
+      hackCode.classList.add('small-hack-code');
+      hackCode.style.color = "#00ff00"; // зеленый цвет для кода
+      let i = 0;
+      function printLine() {
+        if (i < fakeAsmDump.length) {
+          hackCode.textContent += fakeAsmDump[i] + '\n';
+          i++;
+          setTimeout(printLine, 35);
+        }
+      }
+      printLine();
+      setTimeout(() => {
+        document.getElementById('break-overlay').classList.remove('show');
+        const finalBlackout = document.getElementById('final-blackout');
+        finalBlackout.classList.add('show');
+        setTimeout(() => {
+          const aEl = document.getElementById('final-a');
+          const msgEl = document.getElementById('final-a-message');
+          aEl.classList.add('show');
+          msgEl.classList.add('show');
+          setTimeout(() => {
+            aEl.classList.remove('show');
+            msgEl.classList.remove('show');
+            finalBlackout.classList.remove('show');
+            nav.classList.remove('break-hide');
+            main.classList.remove('break-hide');
+            if (switchRow) switchRow.classList.remove('break-hide');
+            hackCode.textContent = '';
+            hackMsg.textContent = '';
+            breakBtn.style.display = '';
+            breakBtn.style.opacity = '1';
+            isBroken = false;
+          }, 5000);
+        }, 250);
+      }, fakeAsmDump.length * 35);
+    }
+
+    function startGlitchEffect() {
+      let t = 0;
+      const colors = ['#e53935', '#00ff00', '#2563eb', '#fff600', '#000', '#fff', '#f25f5c', '#181a20'];
+      function glitchStep() {
+        document.body.style.transition = 'background 0.1s, color 0.1s';
+        document.body.style.background = colors[Math.floor(Math.random() * colors.length)];
+        document.body.style.color = colors[Math.floor(Math.random() * colors.length)];
+        t++;
+        if (t < 50) {
+          glitchTimeout = setTimeout(glitchStep, 100);
+        } else {
+          document.body.style.background = '';
+          document.body.style.color = '';
+          nav.classList.remove('break-hide');
+          main.classList.remove('break-hide');
+          if (switchRow) switchRow.classList.remove('break-hide');
+          hackCode.textContent = '';
+          hackMsg.textContent = '';
+          isBroken = false;
+        }
+      }
+      glitchStep();
+    }
+  </script>
+</body>
+</html>
