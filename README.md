@@ -9,13 +9,13 @@
 
 Лично мне такой дизайн нравится больше - немного доработал, добавил анимации от себя. Прикладываю видео, чтобы сэкономить вам время на клонирование репы и установку зависимостей.
 
-<video controls src="/video/1.mp4" title="Title"></video>
+<video controls src="video/1.mp4" title="Title"></video>
 
 2-я таска – около 20 минут (с учётом понимания задачи + вечер, я немного уставший)
-<video controls src="/video/2.mp4" title="Title"></video>
+<video controls src="video/2.mp4" title="Title"></video>
 
 Доработанная 2-я таска
-<video controls src="/video/2.2.mp4" title="Title"></video>
+<video controls src="video/2.2.mp4" title="Title"></video>
 Потратил где-то 1 час 20 минут, просто потому что стало интересно- Моя репа мои правила XD да когда ещё выпадет шанс похулиганить так?)
 
 Возвращаюсь к задаче.
